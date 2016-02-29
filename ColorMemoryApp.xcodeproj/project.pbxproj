@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5230C2701C83057300A48218 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5230C26F1C83057300A48218 /* Card.swift */; };
 		528F695E1C82F12400E71685 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528F695D1C82F12400E71685 /* AppDelegate.swift */; };
 		528F69601C82F12400E71685 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528F695F1C82F12400E71685 /* ViewController.swift */; };
 		528F69631C82F12400E71685 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 528F69611C82F12400E71685 /* Main.storyboard */; };
 		528F69661C82F12400E71685 /* ColorMemoryApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 528F69641C82F12400E71685 /* ColorMemoryApp.xcdatamodeld */; };
 		528F69681C82F12400E71685 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 528F69671C82F12400E71685 /* Assets.xcassets */; };
 		528F696B1C82F12400E71685 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 528F69691C82F12400E71685 /* LaunchScreen.storyboard */; };
+		528F69731C82FBE200E71685 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528F69721C82FBE200E71685 /* GameController.swift */; };
+		528F697D1C82FE9700E71685 /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528F697C1C82FE9700E71685 /* CardCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5230C26F1C83057300A48218 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Card.swift; path = ../Card.swift; sourceTree = "<group>"; };
 		528F695A1C82F12400E71685 /* ColorMemoryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColorMemoryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		528F695D1C82F12400E71685 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		528F695F1C82F12400E71685 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +28,8 @@
 		528F69671C82F12400E71685 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		528F696A1C82F12400E71685 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		528F696C1C82F12400E71685 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		528F69721C82FBE200E71685 /* GameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
+		528F697C1C82FE9700E71685 /* CardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,9 @@
 				528F69691C82F12400E71685 /* LaunchScreen.storyboard */,
 				528F696C1C82F12400E71685 /* Info.plist */,
 				528F69641C82F12400E71685 /* ColorMemoryApp.xcdatamodeld */,
+				528F69721C82FBE200E71685 /* GameController.swift */,
+				528F697C1C82FE9700E71685 /* CardCell.swift */,
+				5230C26F1C83057300A48218 /* Card.swift */,
 			);
 			path = ColorMemoryApp;
 			sourceTree = "<group>";
@@ -138,7 +147,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				528F697D1C82FE9700E71685 /* CardCell.swift in Sources */,
+				5230C2701C83057300A48218 /* Card.swift in Sources */,
 				528F69661C82F12400E71685 /* ColorMemoryApp.xcdatamodeld in Sources */,
+				528F69731C82FBE200E71685 /* GameController.swift in Sources */,
 				528F69601C82F12400E71685 /* ViewController.swift in Sources */,
 				528F695E1C82F12400E71685 /* AppDelegate.swift in Sources */,
 			);
@@ -290,6 +302,7 @@
 				528F69711C82F12400E71685 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
