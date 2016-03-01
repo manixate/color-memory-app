@@ -11,22 +11,20 @@ import UIKit
 class CardCell: UICollectionViewCell {
 	var card: Card?
 	
-	var faceUp: Bool = true
-	
 	var changing: Bool = false
 	
 	@IBOutlet weak var imageView: UIImageView!
 	
 	func reload() {
 		if let card = self.card {
-			NSLog("\(card.cardNumber)")
+			self.contentView.alpha = card.enabled ? 1 : 0.5
+			self.userInteractionEnabled = card.enabled
+			
 			if card.faceUp {
 				self.imageView.image = UIImage(named: "Color\(card.cardNumber + 1)")
 			} else {
 				self.imageView.image = UIImage(named: "CardBackground")
 			}
-			
-			self.faceUp = card.faceUp
 		}
 	}
 }

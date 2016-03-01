@@ -11,6 +11,7 @@ import Foundation
 class Card {
 	let cardNumber: Int
 	var faceUp: Bool = true
+	var enabled: Bool = true
 	
 	init(cardNumber: Int) {
 		self.cardNumber = cardNumber

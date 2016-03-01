@@ -18,6 +18,14 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	let gameBoard: [Card]
 	
+	var score = 0 {
+		didSet {
+			self.currentScoreLbl.text = String(score);
+		}
+	}
+	
+	var previousSelectionIndex: Int = NSNotFound
+	
 	@IBOutlet weak var topView: UIView!
 	@IBOutlet weak var currentScoreLbl: UILabel!
 	@IBOutlet weak var highScoreBtn: UIButton!
@@ -49,14 +57,11 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
-			for card in self.gameBoard {
-				card.faceUp = false
-			}
-			
-			self.collectionView.reloadData()
-		}
+	}
+	
+	override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+		self.collectionView.collectionViewLayout.invalidateLayout()
+		self.collectionView.reloadData()
 	}
 	
 	// MARK - Actions
@@ -82,9 +87,67 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	// MARK - UICollectionViewDelegate
 	func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 		
+		handleCardFlip(indexPath)
 	}
 	
 	// MARK - Private Methods
+	func handleCardFlip(indexPath: NSIndexPath) {
+		let card: Card = self.gameBoard[indexPath.row]
+		
+		if card.faceUp {
+			card.faceUp = false
+			previousSelectionIndex = NSNotFound
+			
+			collectionView.reloadItemsAtIndexPaths([indexPath])
+		} else {
+			card.faceUp = true
+		
+			if previousSelectionIndex == NSNotFound {
+				previousSelectionIndex = indexPath.row
+			} else {
+				let previousCard = self.gameBoard[previousSelectionIndex]
+				if previousCard.cardNumber == card.cardNumber {
+					score += 2
+					
+					previousCard.enabled = false
+					card.enabled = false
+				} else {
+					score -= 1
+					
+					faceDownCards([self.previousSelectionIndex, indexPath.row], afterDelay: 1)
+				}
+				
+				reloadCards([self.previousSelectionIndex])
+				
+				previousSelectionIndex = NSNotFound
+			}
+			
+			reloadCards([indexPath.row])
+		}
+	}
+	
+	func faceDownCards(indexes: [Int], afterDelay delay: NSTimeInterval) {
+		let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
+		dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+			[unowned self] in
+			
+			for index in indexes {
+				let card = self.gameBoard[index]
+				card.faceUp = false
+			}
+			
+			self.reloadCards(indexes)
+		})
+	}
+	
+	func reloadCards(indexes: [Int]) {
+		let indexPaths = indexes.map({ (index) -> NSIndexPath in
+			return NSIndexPath(forRow: index, inSection: 0)
+		})
+		
+		self.collectionView.reloadItemsAtIndexPaths(indexPaths)
+	}
+	
 	class func generateBoard(rows: Int, columns: Int) -> [Card] {
 		var board: [Card] = Array()
 		
@@ -92,6 +155,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		for _ in 0 ..< rows {
 			for _ in 0 ..< columns {
 				let card = Card(cardNumber: cardNumber++ / 2)
+				card.faceUp = false
 				board.append(card)
 			}
 		}
