@@ -67,6 +67,16 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		self.highScoreLbl.text = "High Score: \n\(highScore)"
 	}
 	
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		UIViewController.attemptRotationToDeviceOrientation()
+	}
+	
+	override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+		return .Portrait
+	}
+	
 	override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
 		self.collectionView.collectionViewLayout.invalidateLayout()
 		self.collectionView.reloadData()

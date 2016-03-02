@@ -41,6 +41,7 @@ class HighScoreViewController: UITableViewController, NSFetchedResultsController
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		UIViewController.attemptRotationToDeviceOrientation()
 		self.navigationController!.navigationBarHidden = false
 	}
 	
