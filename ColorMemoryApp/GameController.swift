@@ -226,7 +226,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	}
 	
 	class func generateBoard(rows: Int, columns: Int) -> [Card] {
-		var board: [Card] = Array()
+		var board = [Card]()
 		
 		var cardNumber = 0
 		for _ in 0 ..< rows {
@@ -234,6 +234,14 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 				let card = Card(cardNumber: cardNumber++ / 2)
 				card.faceUp = false
 				board.append(card)
+			}
+		}
+		
+		let count = board.count
+		for i in 0..<(count - 1) {
+			let j = Int(arc4random_uniform(UInt32(count - i))) + i
+			if (i != j) {
+				swap(&board[i], &board[j])
 			}
 		}
 		
