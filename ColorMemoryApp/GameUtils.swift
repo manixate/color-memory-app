@@ -12,6 +12,8 @@ import CoreData
 
 class GameUtils {
 	// MARK - Class Methods
+	
+	// Generate board
 	class func generateBoard(rows: Int, columns: Int) -> [Card] {
 		var board = [Card]()
 		
@@ -29,6 +31,7 @@ class GameUtils {
 		return board
 	}
 	
+	// Shuffle the board using Fisher–Yates shuffle
 	class func shuffleBoard(inout board: [Card]) {
 		let count = board.count
 		for i in 0..<(count - 1) {
@@ -39,6 +42,7 @@ class GameUtils {
 		}
 	}
 	
+	// Ask user name. If nothing is given then ask again until valid name is given or cancelled
 	class func askUserName(controller: UIViewController, callback: (name: String) -> ()) {
 		let alert = UIAlertController(title: "Game Finished", message: "Please enter your name", preferredStyle: .Alert)
 		alert.addTextFieldWithConfigurationHandler { (textField) -> Void in
@@ -67,6 +71,7 @@ class GameUtils {
 		controller.presentViewController(alert, animated: true, completion: nil)
 	}
 	
+	// Save name and score to database
 	class func saveName(name: String, score: Int) -> Player? {
 		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 		
@@ -84,6 +89,7 @@ class GameUtils {
 		return player
 	}
 	
+	// Show player info dialog
 	class func showPlayerInfo(player: Player, controller: UIViewController) {
 		let ranking = currentRanking(player.score)
 		
@@ -98,6 +104,7 @@ class GameUtils {
 		controller.presentViewController(alert, animated: true, completion: nil)
 	}
 	
+	// Returns current ranking based on score. If the scores are same then the latest entry is considered higher rank
 	class func currentRanking(score: Int) -> Int {
 		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 		

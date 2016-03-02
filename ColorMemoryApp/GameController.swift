@@ -29,6 +29,9 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	var previousSelectionIndex: Int = NSNotFound
 	
+	// If set to true, it allows to deselect your first card selection and no score is deducted
+	var easyMode = false
+	
 	@IBOutlet weak var topView: UIView!
 	@IBOutlet weak var currentScoreLbl: UILabel!
 	@IBOutlet weak var highScoreLbl: UILabel!
@@ -113,23 +116,31 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		let card: Card = self.gameBoard[indexPath.row]
 		
 		if card.faceUp {
-			card.faceUp = false
-			previousSelectionIndex = NSNotFound
 			
-			reloadCards([indexPath.row])
+			// If easy mode then allows to deselect first card selection
+			if (self.easyMode) {
+				card.faceUp = false
+				previousSelectionIndex = NSNotFound
+				
+				reloadCards([indexPath.row])
+			}
 		} else {
 			card.faceUp = true
 		
 			if previousSelectionIndex == NSNotFound {
+				// If first card selection
 				previousSelectionIndex = indexPath.row
 			} else {
+				
 				let previousCard = self.gameBoard[previousSelectionIndex]
 				if previousCard.cardNumber == card.cardNumber {
+					// Match
 					score += 2
 					
 					previousCard.enabled = false
 					card.enabled = false
 				} else {
+					// Different
 					score -= 1
 					
 					flipCards([self.previousSelectionIndex, indexPath.row], faceUp: false, afterDelay: 1)

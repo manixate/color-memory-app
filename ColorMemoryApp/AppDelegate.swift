@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UINavigationControllerDel
 	}
 	
 	func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
-		
+		// It already supports all orientations but due to the constraints provided in the description the some screens have different orientation support
 		if let rootVC = self.window!.rootViewController {
 			return ((rootVC as! UINavigationController).viewControllers.last?.supportedInterfaceOrientations())!
 		} else {
