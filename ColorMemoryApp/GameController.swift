@@ -175,9 +175,11 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			textField.placeholder = "Your name"
 		}
 
-		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
+			self.navigationController!.popToRootViewControllerAnimated(true)
+		}
+		
 		let okAction = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
-			// Move forward
 			let text = alert.textFields!.first!.text
 			self.handleUserNameInput(text)
 		}
@@ -189,13 +191,14 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	}
 	
 	func handleUserNameInput(name: String?) {
-		
-		if let name = name {
-			if let player = saveName(name, score: self.score) {
-				showPlayerInfo(player)
-			}
-		} else {
+		guard let name = name where name.characters.count > 0 else {
 			askUserName()
+			
+			return
+		}
+		
+		if let player = saveName(name, score: self.score) {
+			showPlayerInfo(player)
 		}
 	}
 	
@@ -256,6 +259,12 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			}
 		}
 		
+		shuffleBoard(&board)
+		
+		return board
+	}
+	
+	class func shuffleBoard(inout board: [Card]) {
 		let count = board.count
 		for i in 0..<(count - 1) {
 			let j = Int(arc4random_uniform(UInt32(count - i))) + i
@@ -263,8 +272,6 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 				swap(&board[i], &board[j])
 			}
 		}
-		
-		return board
 	}
 	
 }
