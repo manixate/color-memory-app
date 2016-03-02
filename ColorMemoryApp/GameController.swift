@@ -69,8 +69,6 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		UIViewController.attemptRotationToDeviceOrientation()
 	}
 	
 	override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
