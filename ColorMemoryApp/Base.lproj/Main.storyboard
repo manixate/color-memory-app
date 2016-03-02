@@ -26,9 +26,27 @@
                                     <segue destination="pcK-XI-mWp" kind="show" identifier="GameControllerSegue" id="7ch-rx-hZ8"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M5L-Xx-XUc">
+                                <rect key="frame" x="258" y="323" width="84" height="30"/>
+                                <state key="normal" title="High Scores"/>
+                                <connections>
+                                    <segue destination="wL7-hl-dGx" kind="show" id="eg2-Ty-JAx"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="5vj-86-10x">
+                                <rect key="frame" x="200" y="28" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="5Rn-H1-7t5"/>
+                                    <constraint firstAttribute="height" constant="100" id="kya-U5-fNT"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="5vj-86-10x" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1i0-nC-YME"/>
+                            <constraint firstItem="M5L-Xx-XUc" firstAttribute="top" secondItem="J8i-fG-3FV" secondAttribute="bottom" priority="250" constant="8" id="CqX-xG-Wt8"/>
+                            <constraint firstItem="M5L-Xx-XUc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="UPJ-Qn-T5i"/>
+                            <constraint firstItem="5vj-86-10x" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="gIp-Bc-j1V"/>
                             <constraint firstItem="J8i-fG-3FV" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="raw-OX-KKh"/>
                             <constraint firstItem="J8i-fG-3FV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xhz-91-AXB"/>
                         </constraints>
@@ -267,4 +285,7 @@
     <resources>
         <image name="Logo" width="133" height="53"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="eg2-Ty-JAx"/>
+    </inferredMetricsTieBreakers>
 </document>
