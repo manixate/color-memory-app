@@ -29,7 +29,7 @@ class ViewController: UIViewController {
 	}
 	
 	// MARK - Private Methods
-	func getHighScore() -> Int32 {
+	func getHighScore() -> Int {
 		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 		
 		let fetchRequest = NSFetchRequest(entityName: "Player")

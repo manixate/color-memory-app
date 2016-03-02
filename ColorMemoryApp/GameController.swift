@@ -25,7 +25,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		}
 	}
 	
-	var highScore: Int32 = 0
+	var highScore: Int = 0
 	
 	var previousSelectionIndex: Int = NSNotFound
 	
@@ -191,33 +191,38 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	func handleUserNameInput(name: String?) {
 		
 		if let name = name {
-			saveName(name, score: self.score)
+			if let player = saveName(name, score: self.score) {
+				showPlayerInfo(player)
+			}
 		} else {
 			askUserName()
 		}
 	}
 	
-	func saveName(name: String, score: Int) {
+	func saveName(name: String, score: Int) -> Player? {
 		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 		
 		let player = NSEntityDescription.insertNewObjectForEntityForName("Player", inManagedObjectContext: managedObjectContext) as! Player
 		player.name = name
-		player.score = Int32(score)
-		
-		showPlayerInfo(player)
+		player.score = score
+		player.createdAt = NSDate()
 		
 		do {
 			try managedObjectContext.save()
 		} catch {
-			return
+			return nil
 		}
+		
+		return player
 	}
 	
 	func showPlayerInfo(player: Player) {
-		let alert = UIAlertController(title: "Congrats \(player.name)", message: "You have scored \(player.score)", preferredStyle: .Alert)
+		let ranking = currentRanking(player.score)
 		
-		let okAction = UIAlertAction(title: "OK", style: .Default, handler: { action in
-			self.dismissViewControllerAnimated(true, completion: nil)
+		let alert = UIAlertController(title: "Congrats \(player.name)", message: "Score: \(player.score), Rank: \(ranking)", preferredStyle: .Alert)
+		
+		let okAction = UIAlertAction(title: "OK", style: .Default, handler: { action  in
+			self.navigationController!.popToRootViewControllerAnimated(true)
 		})
 		
 		alert.addAction(okAction)
@@ -225,6 +230,20 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		self.presentViewController(alert, animated: true, completion: nil)
 	}
 	
+	func currentRanking(score: Int) -> Int {
+		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+		
+		let fetchRequest = NSFetchRequest(entityName: "Player")
+		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "score", ascending: true)]
+		fetchRequest.predicate = NSPredicate(format: "score > %@", argumentArray: [Int(score)])
+		
+		let errorPointer = NSErrorPointer()
+		let count = managedObjectContext.countForFetchRequest(fetchRequest, error: errorPointer)
+		
+		return count + 1
+	}
+	
+	// MARK - Class Methods
 	class func generateBoard(rows: Int, columns: Int) -> [Card] {
 		var board = [Card]()
 		

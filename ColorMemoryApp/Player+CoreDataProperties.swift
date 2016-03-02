@@ -15,6 +15,7 @@ import CoreData
 extension Player {
 
     @NSManaged var name: String
-    @NSManaged var score: Int32
+    @NSManaged var score: Int
+	@NSManaged var createdAt: NSDate
 
 }

@@ -18,7 +18,7 @@ class HighScoreViewController: UITableViewController, NSFetchedResultsController
 		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 		
 		let fetchRequest = NSFetchRequest(entityName: "Player")
-		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "score", ascending: false)]
+		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "score", ascending: false), NSSortDescriptor(key: "createdAt", ascending: false)]
 		fetchRequest.fetchLimit = 10
 		
 		fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -72,7 +72,7 @@ class HighScoreViewController: UITableViewController, NSFetchedResultsController
 		
 		let player = fetchedResultsController.objectAtIndexPath(indexPath) as! Player
 		
-		cell.rankLabel.text = "\(indexPath.row)"
+		cell.rankLabel.text = "\(indexPath.row + 1)"
 		cell.nameLabel.text = player.name
 		cell.scoreLabel.text = "\(player.score)"
 		
