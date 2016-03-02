@@ -53,7 +53,7 @@ class GameUtils {
 			let text = alert.textFields!.first!.text
 			
 			guard let name = text where name.characters.count > 0 else {
-				GameCommon.askUserName(controller, callback: callback)
+				GameUtils.askUserName(controller, callback: callback)
 				
 				return
 			}

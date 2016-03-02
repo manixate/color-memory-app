@@ -17,9 +17,9 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	let Rows = 4
 	let Columns = 4
 	
-	let gameBoard: [Card]
+	var gameBoard: [Card]
 	
-	var score: Int = 0 {
+	private var score: Int = 0 {
 		didSet {
 			self.currentScoreLbl.text = "Current Score: \n\(score)";
 		}
@@ -36,7 +36,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
 	required init?(coder aDecoder: NSCoder) {
 		// Generate cards
-		self.gameBoard = GameController.generateBoard(Rows, columns: Columns)
+		self.gameBoard = GameUtils.generateBoard(Rows, columns: Columns)
 		
 		super.init(coder: aDecoder)
 	}
@@ -116,7 +116,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			card.faceUp = false
 			previousSelectionIndex = NSNotFound
 			
-			collectionView.reloadItemsAtIndexPaths([indexPath])
+			reloadCards([indexPath.row])
 		} else {
 			card.faceUp = true
 		
@@ -132,7 +132,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 				} else {
 					score -= 1
 					
-					faceDownCards([self.previousSelectionIndex, indexPath.row], afterDelay: 1)
+					flipCards([self.previousSelectionIndex, indexPath.row], faceUp: false, afterDelay: 1)
 				}
 				
 				reloadCards([self.previousSelectionIndex])
@@ -146,11 +146,16 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		// Check if game is finished
 		let count = gameBoard.filter({ $0.enabled }).count
 		if (count == 0) {
-			askUserName()
+			GameUtils.askUserName(self, callback: { (name) -> () in
+				
+				if let player = GameUtils.saveName(name, score: self.score) {
+					GameUtils.showPlayerInfo(player, controller: self)
+				}
+			})
 		}
 	}
 	
-	func faceDownCards(indexes: [Int], afterDelay delay: NSTimeInterval) {
+	func flipCards(indexes: [Int], faceUp: Bool, afterDelay delay: NSTimeInterval) {
 		// Disable all user actions
 		self.view.userInteractionEnabled = false
 		
@@ -160,7 +165,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			
 			for index in indexes {
 				let card = self.gameBoard[index]
-				card.faceUp = false
+				card.faceUp = faceUp
 			}
 			
 			self.reloadCards(indexes)
@@ -175,111 +180,6 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		})
 		
 		self.collectionView.reloadItemsAtIndexPaths(indexPaths)
-	}
-	
-	func askUserName() {
-		let alert = UIAlertController(title: "Game Finished", message: "Please enter your name", preferredStyle: .Alert)
-		alert.addTextFieldWithConfigurationHandler { (textField) -> Void in
-			textField.placeholder = "Your name"
-		}
-
-		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
-			self.navigationController!.popToRootViewControllerAnimated(true)
-		}
-		
-		let okAction = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
-			let text = alert.textFields!.first!.text
-			self.handleUserNameInput(text)
-		}
-		
-		alert.addAction(cancelAction)
-		alert.addAction(okAction)
-		
-		self.presentViewController(alert, animated: true, completion: nil)
-	}
-	
-	func handleUserNameInput(name: String?) {
-		guard let name = name where name.characters.count > 0 else {
-			askUserName()
-			
-			return
-		}
-		
-		if let player = saveName(name, score: self.score) {
-			showPlayerInfo(player)
-		}
-	}
-	
-	func saveName(name: String, score: Int) -> Player? {
-		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-		
-		let player = NSEntityDescription.insertNewObjectForEntityForName("Player", inManagedObjectContext: managedObjectContext) as! Player
-		player.name = name
-		player.score = score
-		player.createdAt = NSDate()
-		
-		do {
-			try managedObjectContext.save()
-		} catch {
-			return nil
-		}
-		
-		return player
-	}
-	
-	func showPlayerInfo(player: Player) {
-		let ranking = currentRanking(player.score)
-		
-		let alert = UIAlertController(title: "Congrats \(player.name)", message: "Score: \(player.score), Rank: \(ranking)", preferredStyle: .Alert)
-		
-		let okAction = UIAlertAction(title: "OK", style: .Default, handler: { action  in
-			self.navigationController!.popToRootViewControllerAnimated(true)
-		})
-		
-		alert.addAction(okAction)
-		
-		self.presentViewController(alert, animated: true, completion: nil)
-	}
-	
-	func currentRanking(score: Int) -> Int {
-		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-		
-		let fetchRequest = NSFetchRequest(entityName: "Player")
-		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "score", ascending: true)]
-		fetchRequest.predicate = NSPredicate(format: "score > %@", argumentArray: [Int(score)])
-		
-		let errorPointer = NSErrorPointer()
-		let count = managedObjectContext.countForFetchRequest(fetchRequest, error: errorPointer)
-		
-		return count + 1
-	}
-	
-	// MARK - Class Methods
-	class func generateBoard(rows: Int, columns: Int) -> [Card] {
-		var board = [Card]()
-		
-		var cardNumber = 0
-		for _ in 0 ..< rows {
-			for _ in 0 ..< columns {
-				let card = Card(cardNumber: cardNumber++ / 2)
-				card.faceUp = false
-				board.append(card)
-			}
-		}
-		
-		shuffleBoard(&board)
-		
-		return board
-	}
-	
-	class func shuffleBoard(inout board: [Card]) {
-		let count = board.count
-		for i in 0..<(count - 1) {
-			let j = Int(arc4random_uniform(UInt32(count - i))) + i
-			if (i != j) {
-				swap(&board[i], &board[j])
-			}
-		}
 	}
 	
 }
