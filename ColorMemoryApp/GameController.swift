@@ -31,7 +31,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	@IBOutlet weak var topView: UIView!
 	@IBOutlet weak var currentScoreLbl: UILabel!
-	@IBOutlet weak var highScoreBtn: UIButton!
+	@IBOutlet weak var highScoreLbl: UILabel!
 	@IBOutlet weak var collectionView: UICollectionView!
 
 	required init?(coder aDecoder: NSCoder) {
@@ -64,10 +64,7 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		let paragraphStyle = NSMutableParagraphStyle()
 		paragraphStyle.alignment = .Right
 		
-		let highScoreString = NSAttributedString(string: "High Score: \n\(highScore)", attributes: [NSParagraphStyleAttributeName: paragraphStyle.copy()])
-		
-		self.highScoreBtn.setAttributedTitle(highScoreString, forState: .Normal)
-		self.highScoreBtn.titleLabel!.numberOfLines = 0
+		self.highScoreLbl.text = "High Score: \n\(highScore)"
 	}
 	
 	override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
@@ -76,7 +73,9 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	}
 	
 	// MARK - Actions
-	@IBAction func highScoreBtnPressed(sender: UIButton) {
+	@IBAction func logoPressed(sender: AnyObject) {
+		
+		self.navigationController!.popToRootViewControllerAnimated(true)
 	}
 	
 	// MARK - UICollectionViewDataSource
