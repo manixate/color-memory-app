@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class GameController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 	
@@ -18,11 +19,13 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	let gameBoard: [Card]
 	
-	var score = 0 {
+	var score: Int = 0 {
 		didSet {
-			self.currentScoreLbl.text = String(score);
+			self.currentScoreLbl.text = "Current Score: \n\(score)";
 		}
 	}
+	
+	var highScore: Int32 = 0
 	
 	var previousSelectionIndex: Int = NSNotFound
 	
@@ -57,6 +60,14 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		let paragraphStyle = NSMutableParagraphStyle()
+		paragraphStyle.alignment = .Right
+		
+		let highScoreString = NSAttributedString(string: "High Score: \n\(highScore)", attributes: [NSParagraphStyleAttributeName: paragraphStyle.copy()])
+		
+		self.highScoreBtn.setAttributedTitle(highScoreString, forState: .Normal)
+		self.highScoreBtn.titleLabel!.numberOfLines = 0
 	}
 	
 	override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
@@ -124,9 +135,18 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			
 			reloadCards([indexPath.row])
 		}
+		
+		// Check if game is finished
+		let count = gameBoard.filter({ $0.enabled }).count
+		if (count == 0) {
+			askUserName()
+		}
 	}
 	
 	func faceDownCards(indexes: [Int], afterDelay delay: NSTimeInterval) {
+		// Disable all user actions
+		self.view.userInteractionEnabled = false
+		
 		let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
 		dispatch_after(dispatchTime, dispatch_get_main_queue(), {
 			[unowned self] in
@@ -137,6 +157,8 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			}
 			
 			self.reloadCards(indexes)
+			
+			self.view.userInteractionEnabled = true
 		})
 	}
 	
@@ -146,6 +168,62 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		})
 		
 		self.collectionView.reloadItemsAtIndexPaths(indexPaths)
+	}
+	
+	func askUserName() {
+		let alert = UIAlertController(title: "Game Finished", message: "Please enter your name", preferredStyle: .Alert)
+		alert.addTextFieldWithConfigurationHandler { (textField) -> Void in
+			textField.placeholder = "Your name"
+		}
+
+		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+		let okAction = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
+			// Move forward
+			let text = alert.textFields!.first!.text
+			self.handleUserNameInput(text)
+		}
+		
+		alert.addAction(cancelAction)
+		alert.addAction(okAction)
+		
+		self.presentViewController(alert, animated: true, completion: nil)
+	}
+	
+	func handleUserNameInput(name: String?) {
+		
+		if let name = name {
+			saveName(name, score: self.score)
+		} else {
+			askUserName()
+		}
+	}
+	
+	func saveName(name: String, score: Int) {
+		let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+		
+		let player = NSEntityDescription.insertNewObjectForEntityForName("Player", inManagedObjectContext: managedObjectContext) as! Player
+		player.name = name
+		player.score = Int32(score)
+		
+		showPlayerInfo(player)
+		
+		do {
+			try managedObjectContext.save()
+		} catch {
+			return
+		}
+	}
+	
+	func showPlayerInfo(player: Player) {
+		let alert = UIAlertController(title: "Congrats \(player.name)", message: "You have scored \(player.score)", preferredStyle: .Alert)
+		
+		let okAction = UIAlertAction(title: "OK", style: .Default, handler: { action in
+			self.dismissViewControllerAnimated(true, completion: nil)
+		})
+		
+		alert.addAction(okAction)
+		
+		self.presentViewController(alert, animated: true, completion: nil)
 	}
 	
 	class func generateBoard(rows: Int, columns: Int) -> [Card] {
@@ -162,4 +240,5 @@ class GameController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		
 		return board
 	}
+	
 }

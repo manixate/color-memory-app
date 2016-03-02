@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		520FBB841C8528AA00FC3F85 /* Player+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520FBB821C8528AA00FC3F85 /* Player+CoreDataProperties.swift */; };
+		520FBB851C8528AA00FC3F85 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520FBB831C8528AA00FC3F85 /* Player.swift */; };
 		5230C2701C83057300A48218 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5230C26F1C83057300A48218 /* Card.swift */; };
 		528F695E1C82F12400E71685 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528F695D1C82F12400E71685 /* AppDelegate.swift */; };
 		528F69601C82F12400E71685 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528F695F1C82F12400E71685 /* ViewController.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		520FBB821C8528AA00FC3F85 /* Player+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Player+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		520FBB831C8528AA00FC3F85 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		5230C26F1C83057300A48218 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Card.swift; path = ../Card.swift; sourceTree = "<group>"; };
 		528F695A1C82F12400E71685 /* ColorMemoryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColorMemoryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		528F695D1C82F12400E71685 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +76,8 @@
 				528F69721C82FBE200E71685 /* GameController.swift */,
 				528F697C1C82FE9700E71685 /* CardCell.swift */,
 				5230C26F1C83057300A48218 /* Card.swift */,
+				520FBB821C8528AA00FC3F85 /* Player+CoreDataProperties.swift */,
+				520FBB831C8528AA00FC3F85 /* Player.swift */,
 			);
 			path = ColorMemoryApp;
 			sourceTree = "<group>";
@@ -150,6 +156,8 @@
 				528F697D1C82FE9700E71685 /* CardCell.swift in Sources */,
 				5230C2701C83057300A48218 /* Card.swift in Sources */,
 				528F69661C82F12400E71685 /* ColorMemoryApp.xcdatamodeld in Sources */,
+				520FBB841C8528AA00FC3F85 /* Player+CoreDataProperties.swift in Sources */,
+				520FBB851C8528AA00FC3F85 /* Player.swift in Sources */,
 				528F69731C82FBE200E71685 /* GameController.swift in Sources */,
 				528F69601C82F12400E71685 /* ViewController.swift in Sources */,
 				528F695E1C82F12400E71685 /* AppDelegate.swift in Sources */,

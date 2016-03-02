@@ -38,7 +38,7 @@
                                 <rect key="frame" x="264" y="285" width="73" height="30"/>
                                 <state key="normal" title="Play Game"/>
                                 <connections>
-                                    <segue destination="pcK-XI-mWp" kind="showDetail" id="hRu-wP-lfa"/>
+                                    <segue destination="pcK-XI-mWp" kind="showDetail" identifier="GameControllerSegue" id="hRu-wP-lfa"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -82,18 +82,11 @@
                                             </mask>
                                         </variation>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w6i-OX-uVS">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w6i-OX-uVS">
                                         <rect key="frame" x="283" y="0.0" width="84" height="70"/>
-                                        <state key="normal">
-                                            <attributedString key="attributedTitle">
-                                                <fragment content="High Score: 0">
-                                                    <attributes>
-                                                        <color key="NSColor" red="0.090196078430000007" green="0.12549019610000001" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <font key="NSFont" size="16" name="HelveticaNeue"/>
-                                                        <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                    </attributes>
-                                                </fragment>
-                                            </attributedString>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                        <state key="normal" title="High Score: 0">
+                                            <color key="titleColor" red="0.090196078430000007" green="0.12549019610000001" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="highScoreBtnPressed:" destination="pcK-XI-mWp" eventType="touchUpInside" id="FIB-S8-Dhi"/>
